@@ -1,0 +1,102 @@
+language: generic
+cache:
+  directories:
+    - $HOME/.pyenv_cache
+    - $HOME/.cache/pip
+
+matrix:
+  include:
+    - name: "Linux: Python 2.7"
+      os: "linux"
+      env:
+        - "PYENV_VERSION=2.7.15"
+
+    - name: "Linux: Python 3.5"
+      os: "linux"
+      env:
+        - "PYENV_VERSION=3.5.6"
+
+    - name: "Linux: Python 3.6"
+      os: "linux"
+      env:
+        - "PYENV_VERSION=3.6.6"
+    
+    - name: "Linux: Python 3.7 - Lint"
+      os: "linux"
+      dist: "xenial"
+      sudo: "true"
+      env:
+        - "PYENV_VERSION=3.7.0"
+        - "TOXENV=lint"
+
+    - name: "Linux: Python 3.8-dev"
+      os: "linux"
+      dist: "xenial"
+      sudo: "true"
+      env:
+        - "PYENV_VERSION=3.8-dev"
+
+    - name: "OSX: Python 2.7"
+      os: "osx"
+      env:
+        - "PYENV_VERSION=2.7.15"
+
+    - name: "OSX: Python 3.5"
+      os: "osx"
+      env:
+        - "PYENV_VERSION=3.5.6"
+
+    - name: "OSX: Python 3.6"
+      os: "osx"
+      env:
+        - "PYENV_VERSION=3.6.6"
+
+    - name: "OSX: Python 3.7"
+      os: "osx"
+      env:
+        - "PYENV_VERSION=3.7.0"
+
+    - name: "OSX: Python 3.8-dev"
+      os: "osx"
+      env:
+        - "PYENV_VERSION=3.8-dev"
+
+    - name: "Linux: Python 3.6 - Docs"
+      os: "linux"
+      dist: "xenial"
+      sudo: "true"
+      env:
+        - "PYENV_VERSION=3.6.6"
+        - "TOXENV=docs"
+    
+    - name: "Linux: Python 3.7 - Lint"
+      os: "linux"
+      dist: "xenial"
+      sudo: "true"
+      env:
+        - "PYENV_VERSION=3.7.0"
+        - "TOXENV=lint"
+
+allow_failures:
+  - name:
+    - "Linux: Python 3.8-dev"
+    - "OSX: Python 3.8-dev"
+
+env:
+  global:
+    - PYENV_ROOT="$HOME/.pyenv"
+    - PATH="$PYENV_ROOT/bin:$PATH"
+    - PYTHON_BUILD_CACHE_PATH=$HOME/.pyenv_cache
+    - TOXENV=py
+
+
+install:
+  - git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+  - eval "$(pyenv init -)"
+  - pyenv install $PYENV_VERSION
+  - pyenv global $PYENV_VERSION
+  - python --version
+  - pip install --pre -U tox
+
+script:
+  - tox

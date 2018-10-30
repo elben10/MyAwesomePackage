@@ -1,0 +1,7 @@
+click
+pip
+pytest
+sphinx
+sphinx-click
+tox
+twine

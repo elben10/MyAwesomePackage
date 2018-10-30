@@ -1,0 +1,18 @@
+build: false  # Not a C# project
+environment:
+  matrix:
+    - TOXENV: py27
+    - TOXENV: py35
+    - TOXENV: py36
+    - TOXENV: py37
+
+install:
+  - "SET PATH=%PYTHON_HOME%;%PYTHON_HOME%\\Scripts;C:\\Python37;%PATH%"
+  - "python --version"
+  - "pip install --pre -U tox"
+
+test_script:
+  - "tox"
+
+cache:
+  - "%LOCALAPPDATA%\\pip\\cache"
